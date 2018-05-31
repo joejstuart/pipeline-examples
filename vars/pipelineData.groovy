@@ -39,7 +39,8 @@ def stageVars(String ciMessage) {
                      python3                  : "yes",
                      TAG                      : "classic",
                      branch                   : branches[0],
-                     build_pr_id              : (env.fed_pr_id) ?: ''
+                     build_pr_id              : (env.fed_pr_id) ?: '',
+                     TEST_SUBJECTS            : "${env.WORKSPACE}/images/test_subject.qcow2"
              ]
             ]
 
