@@ -1,3 +1,5 @@
+env.CANNED_CI_MESSAGE = '{"build_id":1087828,"old":0,"name":"NetworkManager","task_id":27326589,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/NetworkManager.git#29a9c41beafb5e549c10bfb50ee23ee47bdbc42f","rawhide",{}],"instance":"primary","epoch":1,"version":"1.11.4","owner":"lkundrak","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
+
 properties(
         [
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '30', artifactNumToKeepStr: '100', daysToKeepStr: '90', numToKeepStr: '100')),
@@ -51,7 +53,6 @@ properties(
         ]
 )
 
-env.CI_MESSAGE = '{"build_id":1087828,"old":0,"name":"NetworkManager","task_id":27326589,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/NetworkManager.git#29a9c41beafb5e549c10bfb50ee23ee47bdbc42f","rawhide",{}],"instance":"primary","epoch":1,"version":"1.11.4","owner":"lkundrak","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
 
 
 def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git'],
