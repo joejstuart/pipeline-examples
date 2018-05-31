@@ -1,7 +1,7 @@
 import org.contralib.Utils
 
 
-def buildVars(String ciMessage) {
+def stageVars(String ciMessage) {
     def utils = new Utils()
     def message = readJSON text: ciMessage
     def buildVars = [:]
@@ -10,27 +10,28 @@ def buildVars(String ciMessage) {
     def fed_repo = utils.repoFromRequest(message['request'][0])
     def stages = 
                 ["koji-build"                                     : [
-                    fed_branch                : branches[0]
+                    fed_branch                : branches[0],
                     fed_repo                  : fed_repo,
-                    fed_rev                   : message['rev']
-                    rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
+                    fed_rev                   : message['rev'],
+                    rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo"
             ],
              "repoquery"                                      : [
-                    fed_branch                : branches[0]
+                    fed_branch                : branches[0],
                     fed_repo                  : fed_repo,
-                    fed_rev                   : message['rev']
-                    rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
+                    fed_rev                   : message['rev'],
+                    rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo"
             ],
              "cloud-image-compose"                            : [
                      rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
                      package                  : fed_repo,
                      branch                   : branches[1],
-                     fed_branch               : branches[0],
+                     fed_branch               : branches[0]
 
              ],
              "nvr-verify"                                     : [
                      python3                  : "yes",
                      rpm_repo                 : "/etc/yum.repos.d/${fed_repo}",
+                     TEST_SUBJECTS            : "${env.WORKSPACE}/images/test_subject.qcow2"
              ],
              "package-tests"                                   : [
                      package                  : fed_repo,
@@ -40,9 +41,13 @@ def buildVars(String ciMessage) {
                      build_pr_id              : (env.fed_pr_id) ?: ''
              ]
             ]
-    buildVars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${buildVars['branch']} - Package: ${buildVars['fed_repo']}"
+
 
     return stages
 }
 
+def buildVars() {
+    def vars = [:]
+    vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${buildVars['branch']} - Package: ${buildVars['fed_repo']}"
+}
 
