@@ -87,6 +87,8 @@ buildVars = pipelineData.buildVars(env.CI_MESSAGE)
 print "workspace2"
 print env.WORKSPACE
 
+print buildVars['rpm_repo']
+
     ciPipeline(buildPrefix: 'contra-build-pipeline', buildVars: buildVars) {
 
         stage('koji-build') {
