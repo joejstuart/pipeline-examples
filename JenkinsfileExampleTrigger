@@ -1,3 +1,6 @@
+env.CI_MESSAGE = '{"build_id":1087814,"old":0,"name":"fence-virt","task_id":27324310,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/fence-virt.git#52afa6c0e50bd537ae7d974363b855391cb09146","rawhide",{}],"instance":"primary","epoch":null,"version":"0.4.0","owner":"rmccabe","new":1,"release":"5.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
+
+
 def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git']]
 
     libraries.each { name, repo ->
