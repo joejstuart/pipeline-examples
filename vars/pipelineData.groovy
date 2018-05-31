@@ -46,9 +46,15 @@ def stageVars(String ciMessage) {
     return stages
 }
 
-def buildVars() {
+def buildVars(String ciMessage) {
+    def utils = new Utils()
+    def message = readJSON text: ciMessage
+
+    def branches = utils.setBuildBranch(message['request'][1])
+    def fed_repo = utils.repoFromRequest(message['request'][0])
+
     def vars = [:]
-    vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${buildVars['branch']} - Package: ${buildVars['fed_repo']}"
+    vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${branch[0]} - Package: ${fed_repo}"
     return vars
 }
 
