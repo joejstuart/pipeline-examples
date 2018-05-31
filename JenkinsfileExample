@@ -78,9 +78,14 @@ containers = ['rpmbuild': [tag: env.RPMBUILD_TAG],
               'cloud-image-compose': [tag: env.CLOUD_IMAGE_COMPOSE_TAG]
 ]
 
-buildVars = pipelineData.buildVars(env.CI_MESSAGE)
+print "workspace1"
+print env.WORKSPACE
 
 deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registry.default.svc:5000') {
+buildVars = pipelineData.buildVars(env.CI_MESSAGE)
+
+print "workspace2"
+print env.WORKSPACE
 
     ciPipeline(buildPrefix: 'contra-build-pipeline', buildVars: buildVars) {
 
