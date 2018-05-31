@@ -81,7 +81,7 @@ containers = ['rpmbuild': [tag: env.RPMBUILD_TAG],
 
 deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registry.default.svc:5000') {
 stageVars = pipelineData.stageVars(env.CI_MESSAGE)
-buildVars = pipelineData.buildVars()
+buildVars = pipelineData.buildVars(env.CI_MESSAGE)
 
     ciPipeline(buildPrefix: 'contra-build-pipeline', buildVars: buildVars) {
 
