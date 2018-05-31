@@ -10,6 +10,7 @@ def stageVars(String ciMessage) {
     def fed_repo = utils.repoFromRequest(message['request'][0])
     def stages = 
                 ["koji-build"                                     : [
+                    PROVIDED_KOJI_TASKID      : message['task_id'],
                     fed_branch                : branches[0],
                     fed_repo                  : fed_repo,
                     fed_rev                   : message['rev'],
