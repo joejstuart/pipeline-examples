@@ -10,6 +10,7 @@ def buildVars(String ciMessage) {
     buildVars['fed_repo'] = utils.repoFromRequest(message['request'][0])
     buildVars['fed_branch'] = branches[1]
     buildVars['fed_rev'] = "kojitask-${message['task_id']}"
+    buildVars['fed_task_id'] = message['task_id']
     buildVars['branch'] = branches[0]
     buildVars['package'] = buildVars['fed_repo']
     buildVars['package_name'] = buildVars['fed_repo']
