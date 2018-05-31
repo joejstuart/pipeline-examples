@@ -14,7 +14,7 @@ def buildVars(String ciMessage) {
     buildVars['package'] = buildVars['fed_repo']
     buildVars['package_name'] = buildVars['fed_repo']
     buildVars['rpm_repo'] = "${env.WORKSPACE}/${buildVars['fed_repo']}_repo"
-    buildVars['displayName'] = buildVars['fed_repo']
+    buildVars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${buildVars['branch']} - Package: ${buildVars['fed_repo']}"
 
     return buildVars
 }
