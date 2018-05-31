@@ -115,6 +115,13 @@ deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registr
             }
         }
 
+        stage('package-tests') {
+            handlePipelineStep() {
+                executeInContainer(containerName: 'singlehost-test', containerScript: '/tmp/package-test.sh',
+                        stageVars: stageVars['package-tests'])
+            }
+        }
+
     }
 
 }
