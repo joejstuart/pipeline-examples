@@ -1,4 +1,4 @@
-def libraries = ['ci-pipeline': ['pipelineStep', 'https://github.com/openshift/contra-lib.git']]
+def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git']]
 
     libraries.each { name, repo ->
         library identifier: "${name}@${repo[0]}",
