@@ -110,7 +110,7 @@ buildVars = pipelineData.buildVars()
             handlePipelineStep() {
                 executeInContainer(containerName: 'singlehost-test', containerScript: '/tmp/verify-rpm.sh',
                         stageVars: stageVars['nvr-verify'])
-                }
+                
             }
         }
 
