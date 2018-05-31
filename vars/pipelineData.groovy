@@ -49,5 +49,6 @@ def stageVars(String ciMessage) {
 def buildVars() {
     def vars = [:]
     vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${buildVars['branch']} - Package: ${buildVars['fed_repo']}"
+    return vars
 }
 
