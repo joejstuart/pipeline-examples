@@ -1,0 +1,109 @@
+properties(
+        [
+                buildDiscarder(logRotator(artifactDaysToKeepStr: '30', artifactNumToKeepStr: '100', daysToKeepStr: '90', numToKeepStr: '100')),
+                [$class: 'JobPropertyImpl', throttle: [count: 150, durationName: 'hour', userBoost: false]],
+                parameters(
+                        [
+                                string(name: 'PROVIDED_KOJI_TASKID',
+                                        defaultValue: '',
+                                        description: 'Give an integer only task id to use those artifacts and bypass the rpm build stage (example 123456)'),
+                                string(name: 'ghprbActualCommit',
+                                        defaultValue: 'messaging',
+                                        description: 'The GitHub pull request commit'),
+                                string(name: 'ghprbGhRepository',
+                                        defaultValue: 'joejstuart/contra-lib',
+                                        description: 'The repo the PR is against'),
+                                string(name: 'sha1',
+                                        defaultValue: '',
+                                        description: ''),
+                                string(name: 'ghprbPullId',
+                                        defaultValue: '',
+                                        description: 'Pull Request Number'),
+                                string(name: 'ghprbPullAuthorLogin',
+                                        defaultValue: '',
+                                        description: 'Pull Request Author username'),
+                                string(name: 'SLAVE_TAG',
+                                        defaultValue: 'stable',
+                                        description: 'Tag for slave image'),
+                                string(name: 'RPMBUILD_TAG',
+                                        defaultValue: 'stable',
+                                        description: 'Tag for rpmbuild image'),
+                                string(name: 'CLOUD_IMAGE_COMPOSE_TAG',
+                                        defaultValue: 'stable',
+                                        description: 'Tag for cloud-image-compose image'),
+                                string(name: 'SINGLEHOST_TEST_TAG',
+                                        defaultValue: 'stable',
+                                        description: 'Tag for singlehost test image'),
+                                string(name: 'DOCKER_REPO_URL',
+                                        defaultValue: '172.30.254.79:5000',
+                                        description: 'Docker repo url for Openshift instance'),
+                                string(name: 'OPENSHIFT_NAMESPACE',
+                                        defaultValue: 'continuous-infra',
+                                        description: 'Project namespace for Openshift operations'),
+                                string(name: 'OPENSHIFT_SERVICE_ACCOUNT',
+                                        defaultValue: 'jenkins',
+                                        description: 'Service Account for Openshift operations'),
+                                string(name: 'CI_MESSAGE',
+                                        defaultValue: CANNED_CI_MESSAGE,
+                                        description: 'CI_MESSAGE')
+                        ]
+                ),
+        ]
+)
+
+env.CI_MESSAGE = '{"build_id":1087828,"old":0,"name":"NetworkManager","task_id":27326589,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/NetworkManager.git#29a9c41beafb5e549c10bfb50ee23ee47bdbc42f","rawhide",{}],"instance":"primary","epoch":1,"version":"1.11.4","owner":"lkundrak","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
+
+
+def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git'],
+                 'mypipeline':  ['master', 'https://gitlab.cee.redhat.com/jstuart/upstreamPipeline.git']]
+
+libraries.each { name, repo ->
+    library identifier: "${name}@${repo[0]}",
+            retriever: modernSCM([$class: 'GitSCMSource',
+                                  remote: repo[1]])
+
+}
+
+// Check out PR's version of library
+library identifier: "upstream-fedora-pipeline@${env.ghprbActualCommit}",
+        retriever: modernSCM([$class: 'GitSCMSource',
+                              remote: "https://github.com/${env.ghprbGhRepository}",
+                              traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait'],
+                                       [$class: 'RefSpecsSCMSourceTrait',
+                                        templates: [[value: '+refs/heads/*:refs/remotes/@{remote}/*'],
+                                                    [value: '+refs/pull/*:refs/remotes/origin/pr/*']]]]])
+
+containers = ['rpmbuild': [tag: env.RPMBUILD_TAG],
+              'cloud-image-compose': [tag: env.CLOUD_IMAGE_COMPOSE_TAG]
+]
+
+buildVars = pipelineData.buildVars(env.CI_MESSAGE)
+
+deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registry.default.svc:5000') {
+
+    ciPipeline(buildPrefix: 'contra-build-pipeline', buildVars: buildVars) {
+
+        stage('koji-build') {
+            handlePipelineStep {
+                executeInContainer(containerName: 'rpmbuild', containerScript: '/tmp/koji_build_pr.sh',
+                        stageVars: buildVars)
+            }
+        }
+
+        stage('repoquery') {
+            handlePipelineStep {
+                executeInContainer(containerName: 'rpmbuild', containerScript: '/tmp/repoquery.sh',
+                        stageVars: buildVars)
+            }
+        }
+
+        stage('cloud-image-compose') {
+            handlePipelineStep() {
+                executeInContainer(containerName: 'cloud-image-compose', containerScript: '/tmp/virt-customize.sh',
+                        stageVars: buildVars)
+            }
+        }
+
+    }
+
+}
