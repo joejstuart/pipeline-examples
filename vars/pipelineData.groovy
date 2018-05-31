@@ -54,7 +54,7 @@ def buildVars(String ciMessage) {
     def fed_repo = utils.repoFromRequest(message['request'][0])
 
     def vars = [:]
-    vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${branch[0]} - Package: ${fed_repo}"
+    vars['displayName'] = "Build #${env.BUILD_NUMBER} - Branch: ${branches[0]} - Package: ${fed_repo}"
     return vars
 }
 
