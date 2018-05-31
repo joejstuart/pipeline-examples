@@ -15,6 +15,12 @@ def buildVars(String ciMessage) {
                     fed_rev                   : message['rev']
                     rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
             ],
+             "repoquery"                                      : [
+                    fed_branch                : branches[0]
+                    fed_repo                  : fed_repo,
+                    fed_rev                   : message['rev']
+                    rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
+            ],
              "cloud-image-compose"                            : [
                      rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
                      package                  : fed_repo,

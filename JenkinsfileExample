@@ -75,40 +75,41 @@ library identifier: "upstream-fedora-pipeline@${env.ghprbActualCommit}",
                                                     [value: '+refs/pull/*:refs/remotes/origin/pr/*']]]]])
 
 containers = ['rpmbuild': [tag: env.RPMBUILD_TAG],
-              'cloud-image-compose': [tag: env.CLOUD_IMAGE_COMPOSE_TAG]
+              'cloud-image-compose': [tag: env.CLOUD_IMAGE_COMPOSE_TAG],
+              'singlehost-test': [tag: env.SINGLEHOST_TEST_TAG]
 ]
-
-print "workspace1"
-print env.WORKSPACE
 
 deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registry.default.svc:5000') {
 buildVars = pipelineData.buildVars(env.CI_MESSAGE)
-
-print "workspace2"
-print env.WORKSPACE
-
-print buildVars['rpm_repo']
 
     ciPipeline(buildPrefix: 'contra-build-pipeline', buildVars: buildVars) {
 
         stage('koji-build') {
             handlePipelineStep {
                 executeInContainer(containerName: 'rpmbuild', containerScript: '/tmp/pull_old_task.sh',
-                        stageVars: buildVars)
+                        stageVars: buildVars['koji-build'])
             }
         }
 
         stage('repoquery') {
             handlePipelineStep {
                 executeInContainer(containerName: 'rpmbuild', containerScript: '/tmp/repoquery.sh',
-                        stageVars: buildVars)
+                        stageVars: buildVars['repoquery'])
             }
         }
 
         stage('cloud-image-compose') {
             handlePipelineStep() {
                 executeInContainer(containerName: 'cloud-image-compose', containerScript: '/tmp/virt-customize.sh',
-                        stageVars: buildVars)
+                        stageVars: buildVars['cloud-image-compose'])
+            }
+        }
+
+        stage('nvr-verify') {
+            handlePipelineStep() {
+                executeInContainer(containerName: 'singlehost-test', containerScript: '/tmp/verify-rpm.sh',
+                        stageVars: buildVars['nvr-verify'])
+                }
             }
         }
 
