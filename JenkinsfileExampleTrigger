@@ -2,7 +2,7 @@ env.CI_MESSAGE = '{"build_id":1087814,"old":0,"name":"fence-virt","task_id":2732
 
 
 def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git'],
-                ['mypipeline':  ['master', 'https://gitlab.cee.redhat.com/jstuart/upstreamPipeline.git']]
+                 'mypipeline':  ['master', 'https://gitlab.cee.redhat.com/jstuart/upstreamPipeline.git']]
 
     libraries.each { name, repo ->
         library identifier: "${name}@${repo[0]}",
