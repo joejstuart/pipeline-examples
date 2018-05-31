@@ -12,6 +12,7 @@ def buildVars(String ciMessage) {
     buildVars['fed_rev'] = "kojitask-${message['task_id']}"
     buildVars['branch'] = branch
     buildVars['package'] = buildVars['fed_repo']
+    buildVars['package_name'] = buildVars['fed_repo']
     buildVars['rpm_repo'] = "${env.WORKSPACE}/${buildVars['fed_repo']}_repo"
 
     return buildVars
