@@ -6,7 +6,7 @@ def buildVars(String ciMessage) {
     def message = readJSON text: ciMessage
     def buildVars = [:]
 
-    def branches = = utils.setBuildBranch(message['request'][1])
+    def branches = utils.setBuildBranch(message['request'][1])
     buildVars['fed_repo'] = utils.repoFromRequest(message['request'][0])
     buildVars['fed_branch'] = branches[1]
     buildVars['fed_rev'] = "kojitask-${message['task_id']}"
