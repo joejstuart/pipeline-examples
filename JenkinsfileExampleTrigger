@@ -11,9 +11,11 @@ def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/con
 
 containers = ['rpmbuild-rhel': [:]]
 
+buildVars = pipelineData.buildVars(env.CI_MESSAGE)
+
 deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registry.default.svc:5000') {
 
-    ciPipeline(buildPrefix: 'package-build', buildVars: [package_name: 'vim']) {
+    ciPipeline(buildPrefix: 'package-build', buildVars: buildVars) {
 
         stageName = 'build-trigger'
         stage(stageName) {
