@@ -56,7 +56,7 @@ properties(
 
 
 def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/contra-lib.git'],
-                 'mypipeline':  ['master', 'https://gitlab.cee.redhat.com/jstuart/upstreamPipeline.git']]
+                 'mypipeline':  ['master', 'https://github.com/joejstuart/pipeline-example.git']]
 
 libraries.each { name, repo ->
     library identifier: "${name}@${repo[0]}",
