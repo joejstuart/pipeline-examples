@@ -11,13 +11,13 @@ def stageVars(String ciMessage) {
     def stages = 
                 ["koji-build"                                     : [
                     PROVIDED_KOJI_TASKID      : message['task_id'],
-                    fed_branch                : branches[0],
+                    fed_branch                : branches[1],
                     fed_repo                  : fed_repo,
                     fed_rev                   : message['rev'],
                     rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo"
             ],
              "repoquery"                                      : [
-                    fed_branch                : branches[0],
+                    fed_branch                : branches[1],
                     fed_repo                  : fed_repo,
                     fed_rev                   : message['rev'],
                     rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo"
@@ -25,8 +25,8 @@ def stageVars(String ciMessage) {
              "cloud-image-compose"                            : [
                      rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
                      package                  : fed_repo,
-                     branch                   : branches[1],
-                     fed_branch               : branches[0]
+                     branch                   : branches[0],
+                     fed_branch               : branches[1]
 
              ],
              "nvr-verify"                                     : [
@@ -38,7 +38,7 @@ def stageVars(String ciMessage) {
                      package                  : fed_repo,
                      python3                  : "yes",
                      TAG                      : "classic",
-                     branch                   : branches[1],
+                     branch                   : branches[0],
                      build_pr_id              : (env.fed_pr_id) ?: ''
              ]
             ]
