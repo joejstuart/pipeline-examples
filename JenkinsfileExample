@@ -1,4 +1,4 @@
-env.CANNED_CI_MESSAGE = '{"build_id":1087828,"old":0,"name":"NetworkManager","task_id":27326589,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/NetworkManager.git#29a9c41beafb5e549c10bfb50ee23ee47bdbc42f","rawhide",{}],"instance":"primary","epoch":1,"version":"1.11.4","owner":"lkundrak","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
+env.CANNED_CI_MESSAGE = '{"build_id":1088025,"old":0,"name":"iproute","task_id":27348745,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/iproute.git?#ec833118f522e3b992dc6b5784ae2c8928c4a329","rawhide",{}],"instance":"primary","epoch":null,"version":"4.16.0","owner":"psutter","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
 
 properties(
         [
