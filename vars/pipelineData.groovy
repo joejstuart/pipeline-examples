@@ -64,7 +64,7 @@ def stageVars(String ciMessage) {
 
                     [
                             python3                  : 'yes',
-                            rpm_repo                 : "${env.WORKSPACE}/${fed_repo}_repo",
+                            rpm_repo                 : "/etc/yum.repos.d/${fed_repo}",
                             TEST_SUBJECTS            : "${env.WORKSPACE}/images/test_subject.qcow2"
 
                     ],
