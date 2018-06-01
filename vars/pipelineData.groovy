@@ -54,7 +54,7 @@ def stageVars(String ciMessage) {
             'cloud-image-compose':
 
                     [
-                            rpm_repo                  : "${env.WORKSPACE}/${fed_repo}_repo",
+                            rpm_repo                 : "${env.WORKSPACE}/${fed_repo}_repo",
                             package                  : fed_repo,
                             branch                   : branches[0],
                             fed_branch               : branches[1]
@@ -63,8 +63,8 @@ def stageVars(String ciMessage) {
             'nvr-verify':
 
                     [
-                            python3                  : "yes",
-                            rpm_repo                 : "/etc/yum.repos.d/${fed_repo}",
+                            python3                  : 'yes',
+                            rpm_repo                 : "${env.WORKSPACE}/${fed_repo}_repo",
                             TEST_SUBJECTS            : "${env.WORKSPACE}/images/test_subject.qcow2"
 
                     ],
@@ -73,8 +73,8 @@ def stageVars(String ciMessage) {
 
                     [
                             package                  : fed_repo,
-                            python3                  : "yes",
-                            TAG                      : "classic",
+                            python3                  : 'yes',
+                            TAG                      : 'classic',
                             branch                   : branches[1],
                             build_pr_id              : (env.fed_pr_id) ?: '',
                             TEST_SUBJECTS            : "${env.WORKSPACE}/images/test_subject.qcow2"
