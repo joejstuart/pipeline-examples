@@ -89,9 +89,9 @@ deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registr
 
         repoQuery()
 
-        nvrVerify()
-
         cloudImageCompose()
+
+        nvrVerify()
 
         packageTests()
 
