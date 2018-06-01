@@ -1,4 +1,4 @@
-env.CANNED_CI_MESSAGE = '{"build_id":1088025,"old":0,"name":"iproute","task_id":27348745,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/iproute.git?#ec833118f522e3b992dc6b5784ae2c8928c4a329","rawhide",{}],"instance":"primary","epoch":null,"version":"4.16.0","owner":"psutter","new":1,"release":"1.fc29","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
+env.CANNED_CI_MESSAGE = '{"build_id":1088083,"old":0,"name":"krb5","task_id":27353211,"attribute":"state","request":["git+https://src.fedoraproject.org/rpms/krb5.git#6e3058a9c5ca723480629656e7d60b8a32b9156b","f28-candidate",{}],"instance":"primary","epoch":null,"version":"1.16.1","owner":"rharwood","new":1,"release":"3.fc28","topic":"org.fedoraproject.prod.buildsys.build.state.change"}'
 
 properties(
         [
