@@ -21,7 +21,7 @@ deployOpenShiftTemplate(containers: containers, docker_repo_url: 'docker-registr
         stageName = 'build-trigger'
         stage(stageName) {
             validMessage = buildTrigger {
-                true
+                    true
             }
 
         }
