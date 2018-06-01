@@ -10,7 +10,7 @@ def libraries = ['ci-pipeline': ['messaging', 'https://github.com/joejstuart/con
                                       remote: repo[1]])
     }
 
-containers = ['rpmbuild-rhel': [:]]
+containers = ['rpmbuild': [:]]
 
 buildVars = pipelineData.buildVars(env.CI_MESSAGE)
 
